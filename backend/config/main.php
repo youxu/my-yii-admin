@@ -14,14 +14,42 @@ return [
     'modules' => [
         "admin" => [
             "class" => "mdm\admin\Module",
+//            'layout' => 'left-menu'
+//            'menus' => [
+//                'templates' => [
+//                    'create' => '@app/views/menu/'
+//                ]
+//            ]
         ],
+
     ],
     "aliases" => [
         "@mdm/admin" => "@vendor/mdmsoft/yii2-admin",
+        "@web" => "@app/web",
+    ],
+    'as theme' => [
+        'class' => 'backend\components\ThemeControl',
     ],
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'Y-M-d',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'currencyCode' => 'EUR',
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => 'skin-red',
+                ],
+            ],
+            'assetMap' => [
+                'jquery.js' => '@web/assets/js/jquery.js', // jquery v3.2.1 和 jQuery UI 1.11.4 版本冲突 @https://stackoverflow.com/questions/37914869/jquery-ui-error-f-getclientrects-is-not-a-function
+                'jquery.min.js' => '@web/assets/js/jquery.js',
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -58,6 +86,7 @@ return [
             // 指定续接在URL后面的一个后缀，如 .html 之类的。仅在 enablePrettyUrl 启用时有效。
             "suffix" => "",
             "rules" => [
+                '/blogs' => '/blog/index',
                 "<controller:\w+>/<id:\d+>"=>"<controller>/view",
                 "<controller:\w+>/<action:\w+>"=>"<controller>/<action>"
             ],
@@ -66,22 +95,35 @@ return [
             "class" => 'yii\rbac\DbManager', //这里记得用单引号而不是双引号
             "defaultRoles" => ["guest"],
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+
+//        'view' => [
+//            'theme' => [
+//                // 'basePath' => '@app/themes/spring',
+//                // 'baseUrl' => '@web/themes/spring',
+//                'pathMap' => [
+//                    '@app/views' => [
+//                        '@app/themes/spring',
+//                    ]
+//                ],
+//            ],
+//        ],
+                /*
+                'urlManager' => [
+                    'enablePrettyUrl' => true,
+                    'showScriptName' => false,
+                    'rules' => [
+                    ],
+                ],
+                */
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             //这里是允许访问的action
             //controller/action
-            '*'
+//            '*'
         ]
     ],
+
     'params' => $params,
 ];
